@@ -47,7 +47,7 @@ public class inicioServlet extends HttpServlet {
                     row.put("id", rs.getInt("id"));
                     row.put("nombre", rs.getString("nombre"));
                     row.put("apellido", rs.getString("apellido"));
-                    row.put("fecha_nac", rs.getDate("fechnac"));
+                    row.put("fechnac", rs.getDate("fechnac"));
                     row.put("activo", rs.getInt("activo"));
                     resultado.add(row);
                 }
