@@ -14,7 +14,7 @@ public class Conexion {
      
         Context initContext = new InitialContext();
         Context envContext = (Context) initContext.lookup("java:comp/env");
-        DataSource ds = (DataSource) envContext.lookup("jdbc/clientes");
+        DataSource ds = (DataSource) envContext.lookup("jdbc/clientes_db");
         Connection conn = ds.getConnection();
         return conn;
         

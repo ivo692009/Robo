@@ -1,9 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:include page="layout.jsp"></jsp:include>
 <body>
         <div>
             <div>
                 <table >
+                    <legend>
                     <thead>
                         <h3>Clientes</h3>
                     </thead>
@@ -31,20 +31,21 @@
                                     ${cliente.apellido}
                                 </td>
                                 <td>
-                                    ${cliente.fecha_nac}
+                                    ${cliente.fechnac}
                                 </td>
                                 <td>
                                     <div>
-                                        <a type="button" href="/Robo/editar?id=${cliente.id}"> Editar</a>
-                                        <a type="button">Eliminar</a>
+                                        <a type="button" href="/Robo/modificar?id=${cliente.id}"> Modificar</a>
+                                        <a type="button" href="/Robo/bajar?id=${cliente.id}"> Eliminar </a>
                                     </div>                                    
                                 </td>
                             </tr>
                         </c:forEach>
                     </tbody>
+                </legend>
                 </table>
                 <hr>
-                <a type="button" href="/Robo/nuevo">Nuevo cliente</a>
+                <a type="button" href="/Robo/alta">Nuevo cliente</a>
             </div>
         </div>
     </body>
