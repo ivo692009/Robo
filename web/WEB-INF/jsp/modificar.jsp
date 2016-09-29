@@ -4,6 +4,7 @@
         <div>
             <legend>Nuevo cliente</legend>
             <form method="POST" action="/Robo/modificar">
+            <input type="hidden" name="id" id="id" value="${cliente_id}">
                 <div>
                     <label><b>Nombre:</b></label>
                     <div>
