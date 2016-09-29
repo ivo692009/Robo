@@ -2,6 +2,7 @@ package Servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,16 +22,12 @@ public class modificarServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet modificarServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet modificarServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            //Creo el objeto Nacionalidades con la lista de lacionalidades y lo pongo a dispocicion del jsp
+            List<Nacionalidad> nacionalidades = Nacionalidad.all(conn);
+            request.setAttribute("nacionalidades", nacionalidades);
+            
+           //redireccion a la vista del jsp
+           request.getRequestDispatcher("WEB-INF/jsp/modificar.jsp").forward(request, response);
         } finally {
             out.close();
         }

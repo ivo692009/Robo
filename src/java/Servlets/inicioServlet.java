@@ -52,7 +52,7 @@ public class inicioServlet extends HttpServlet {
                     resultado.add(row);
                 }
             
-            //Inicializa en el atributo "resultado" los registros almacenados por la consulta SQL
+            //Inicializa en el atributo "resultado" los registros almacenados por la consulta SQL y lo pone a dispocision al jsp
             request.setAttribute("resultado", resultado);
             
             //finaliza la coneccion a la base de datos y el prepareStatment
@@ -69,18 +69,6 @@ public class inicioServlet extends HttpServlet {
             Logger.getLogger(inicioServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-  
 
     public String getServletInfo() {
         return "Short description";

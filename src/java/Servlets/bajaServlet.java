@@ -20,7 +20,8 @@ public class bajaServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            
+            //Redireccion al jsp
+            request.getRequestDispatcher("WEB-INF/jsp/baja.jsp").forward(request, response);
         } 
         
         
