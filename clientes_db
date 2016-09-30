@@ -1,0 +1,63 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE SCHEMA IF NOT EXISTS `clientes_db` DEFAULT CHARACTER SET latin1 ;
+USE `clientes_db` ;
+
+-- -----------------------------------------------------
+-- Table `clientes_db`.`nacionalidades`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `clientes_db`.`nacionalidades` ;
+
+CREATE TABLE IF NOT EXISTS `clientes_db`.`nacionalidades` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` VARCHAR(100) NOT NULL,
+  `iso` CHAR(2) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 7
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `clientes_db`.`clientes`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `clientes_db`.`clientes` ;
+
+CREATE TABLE IF NOT EXISTS `clientes_db`.`clientes` (
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `apellido` VARCHAR(50) NOT NULL,
+  `nombre` VARCHAR(50) NOT NULL,
+  `activo` TINYINT(4) NOT NULL,
+  `fechnac` DATE NOT NULL,
+  `nacionalidad_id` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `nacionalidad_id` (`nacionalidad_id` ASC),
+  CONSTRAINT `fk_clientes_1`
+    FOREIGN KEY (`nacionalidad_id`)
+    REFERENCES `clientes_db`.`nacionalidades` (`id`)
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 9
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `clientes_db`.`ussers`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `clientes_db`.`ussers` ;
+
+CREATE TABLE IF NOT EXISTS `clientes_db`.`ussers` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `usu` VARCHAR(30) NOT NULL,
+  `con` VARCHAR(30) NOT NULL,
+  `permiso` INT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
