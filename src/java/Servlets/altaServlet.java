@@ -44,6 +44,12 @@ public class altaServlet extends HttpServlet {
                  response.sendRedirect("/Robo/inicio");
                  }
             
+                //Validamos persmiso
+                if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 1){
+                 System.err.println("Usted no tiene permiso para esta operacion");
+                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
+                 response.sendRedirect("/Robo/inicio");         
+                }
             
             //Inicio coneccinon a la BBDD
             Connection conn = Utilidades.Conexion.getConnection();
@@ -83,14 +89,20 @@ public class altaServlet extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             
             //Validamos la sesion
-            HttpSession session = request.getSession(false);
-                if (session == null)
+            HttpSession sesion = request.getSession(false);
+                if (sesion == null)
                 {
                  System.err.println("No ah iniciado sesion");
                  request.getRequestDispatcher("index.jsp").forward(request, response);
                  response.sendRedirect("/Robo/inicio");
                  }
             
+                //Validamos persmiso
+                if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 1){
+                 System.err.println("Usted no tiene permiso para esta operacion");
+                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
+                 response.sendRedirect("/Robo/inicio");         
+                }
             
             //Recivimos los parametros que vienen por POST desde el formulario de alta.jsp
             String nombre = request.getParameter("nombre");

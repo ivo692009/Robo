@@ -36,14 +36,21 @@ public class modificarServlet extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             
             //Validamos la sesion
-            HttpSession session = request.getSession(false);
-                if (session == null)
+            HttpSession sesion = request.getSession(false);
+                if (sesion == null)
                 {
                  System.err.println("No ah iniciado sesion");
                  request.getRequestDispatcher("index.jsp").forward(request, response);
                  response.sendRedirect("/Robo/inicio");
                  }
             
+                //Validamos persmiso
+                if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 3){
+                 System.err.println("Usted no tiene permiso para esta operacion");
+                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
+                 response.sendRedirect("/Robo/inicio");         
+                }
+                
             //Recivimos los parametros que vienen por POST desde el formulario de modificar.jsp
             String nombre = request.getParameter("nombre");
             String apellido = request.getParameter("apellido");
@@ -106,14 +113,20 @@ public class modificarServlet extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             
             //Validamos la sesion
-            HttpSession session = request.getSession(false);
-                if (session == null)
+            HttpSession sesion = request.getSession(false);
+                if (sesion == null)
                 {
                  System.err.println("No ah iniciado sesion");
                  request.getRequestDispatcher("index.jsp").forward(request, response);
                  response.sendRedirect("/Robo/inicio");
                  }
             
+                //Validamos persmiso
+                if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 3){
+                 System.err.println("Usted no tiene permiso para esta operacion");
+                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
+                 response.sendRedirect("/Robo/inicio");         
+                }
             
             //Se recibe la id del cliente seleccionado desde el index
             Integer id = Integer.valueOf(request.getParameter("id"));
