@@ -3,42 +3,13 @@ package Servlets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.LinkedList;
-import java.util.List;
 
 
 public class Nacionalidad {
     
     private Integer id;
     private String nacionalidad;
-
-    public static List<Nacionalidad> all(Connection conn) {
-        
-        //Genera una lista enlazada de objetos que sera de tipo Nacionalidad
-        List<Nacionalidad> ns = new LinkedList<>();
-        
-        String sql = "SELECT * FROM nacionalidades";
-        
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql); 
-            //Almacena la respuesta encontrada
-            ResultSet rs = ps.executeQuery();
-            //Si encontro algun resultado.
-            while (rs.next()) {                
-                //Almacena cada uno de los resultados encontrados en objetos tipo Nacionalidad
-                Nacionalidad n = new Nacionalidad(); 
-                n.setId(rs.getInt("id"));
-                n.setNacionalidad(rs.getString("nacionalidad"));  
-                //Añade a la lista el objeto
-                ns.add(n);
-            }    
-        } catch (Exception e) {
-            
-        }
-        
-        return ns;
-    }
-    
+  
     //Devuelve un registro por un id determinado
     public Nacionalidad(Integer id, Connection conn) {
         

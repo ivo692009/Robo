@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -7,6 +8,14 @@
     </head>
     <body>
         <h1>Inicio de la aplicaicon</h1>
-        <h1><a href="/Robo/inicio"> Inicio </a></h1>
+        
+            <c:if test="${error != null}">
+                <h1>${error}</h1>
+            </c:if>     
+        <form action="log" method="POST">
+        <input type="text" name="user" value="usuario">
+        <input type="password" name="password" value="contraseña">
+        <input type="submit" value="Enviar">
+        <form>
     </body>
 </html>

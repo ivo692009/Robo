@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -32,6 +33,17 @@ public class altaServlet extends HttpServlet {
             throws ServletException, IOException {
          try {
             response.setContentType("text/html;charset=UTF-8");
+            
+            //Validamos la sesion
+            HttpSession sesion = request.getSession(false);
+
+                if (sesion == null)
+                {
+                 System.err.println("No ah iniciado sesion");
+                 request.getRequestDispatcher("index.jsp").forward(request, response);
+                 response.sendRedirect("/Robo/inicio");
+                 }
+            
             
             //Inicio coneccinon a la BBDD
             Connection conn = Utilidades.Conexion.getConnection();
@@ -69,6 +81,16 @@ public class altaServlet extends HttpServlet {
             throws ServletException, IOException {      
         try { 
             response.setContentType("text/html;charset=UTF-8");
+            
+            //Validamos la sesion
+            HttpSession session = request.getSession(false);
+                if (session == null)
+                {
+                 System.err.println("No ah iniciado sesion");
+                 request.getRequestDispatcher("index.jsp").forward(request, response);
+                 response.sendRedirect("/Robo/inicio");
+                 }
+            
             
             //Recivimos los parametros que vienen por POST desde el formulario de alta.jsp
             String nombre = request.getParameter("nombre");
@@ -113,7 +135,7 @@ public class altaServlet extends HttpServlet {
             conn.close();
             
             //Redireccionamos al index
-            response.sendRedirect("/Robo/index");
+            response.sendRedirect("/Robo/inicio");
             
         } catch (NamingException ex) {
             Logger.getLogger(altaServlet.class.getName()).log(Level.SEVERE, null, ex);

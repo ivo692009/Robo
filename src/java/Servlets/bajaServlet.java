@@ -1,12 +1,10 @@
 package Servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -15,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,6 +30,16 @@ public class bajaServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             response.setContentType("text/html;charset=UTF-8");
+            
+            //Validamos la sesion
+            HttpSession session = request.getSession(false);
+                if (session == null)
+                {
+                 System.err.println("No ah iniciado sesion");
+                 request.getRequestDispatcher("index.jsp").forward(request, response);
+                 response.sendRedirect("/Robo/inicio");
+                 }
+            
             
             //Se recibe la id del cliente seleccionado desde el index
             Integer id = Integer.valueOf(request.getParameter("id"));
@@ -86,6 +95,16 @@ public class bajaServlet extends HttpServlet {
             try {
             response.setContentType("text/html;charset=UTF-8");
             
+            //Validamos la sesion
+            HttpSession session = request.getSession(false);
+                if (session == null)
+                {
+                 System.err.println("No ah iniciado sesion");
+                 request.getRequestDispatcher("index.jsp").forward(request, response);
+                 response.sendRedirect("/Robo/inicio");
+                 }
+            
+            
             //Se genera una coneccion a la BBDD
             Connection conn = Utilidades.Conexion.getConnection();
             
@@ -106,7 +125,7 @@ public class bajaServlet extends HttpServlet {
             conn.close();
             
             //Se redirecciona al index
-            response.sendRedirect("/Robo/index");
+            response.sendRedirect("/Robo/inicio");
             
         } catch (NamingException ex) {
             Logger.getLogger(bajaServlet.class.getName()).log(Level.SEVERE, null, ex);

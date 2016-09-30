@@ -42,7 +42,7 @@
                 </div>
                 <div>
                     <div>
-                        <a class="button" href="/Robo/inicio">Volver al listado</a>
+                        <a class="button" href="/Robo/index">Volver al listado</a>
                         <button type="submit">Guardar</button>
                     </div>
                 </div>

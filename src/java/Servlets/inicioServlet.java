@@ -1,7 +1,6 @@
 package Servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -27,16 +27,30 @@ public class inicioServlet extends HttpServlet {
 
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
+            throws ServletException, IOException {     
         
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         try {
             
            response.setContentType("text/html;charset=UTF-8");
+           
+           //Validamos la sesion
+            HttpSession session = request.getSession(false);
+                if (session == null)
+                {
+                 System.err.println("No ah iniciado sesion");
+                 request.getRequestDispatcher("index.jsp").forward(request, response);
+                 response.sendRedirect("/Robo/inicio");
+                 }
+            
             //coneccion a la base de datos.
             Connection conn = Utilidades.Conexion.getConnection();
             //crea el SQL y hace un prepares statement
-            String sql = "SELECT * FROM clientes";
+            String sql = "SELECT * FROM clientes.clientes";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             //en una lista enlazada almacena todos los resultados encontrados
@@ -68,6 +82,11 @@ public class inicioServlet extends HttpServlet {
         } catch (NamingException ex) {
             Logger.getLogger(inicioServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     public String getServletInfo() {
