@@ -36,14 +36,16 @@ public class bajaServlet extends HttpServlet {
             HttpSession sesion = request.getSession(false);
                 if (sesion == null)
                 {
-                 System.err.println("No ah iniciado sesion");
-                 response.sendRedirect("/Robo/inicio");
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("index.jsp").forward(request, response);
                  }
             
             //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 2){
-                 System.err.println("Usted no tiene permiso para esta operacion");
-                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);      
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);        
                 }
             
             //Se recibe la id del cliente seleccionado desde el index
@@ -114,14 +116,16 @@ public class bajaServlet extends HttpServlet {
             HttpSession sesion = request.getSession(false);
                 if (sesion == null)
                 {
-                 System.err.println("No ah iniciado sesion");
-                 response.sendRedirect("/Robo/inicio");
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("index.jsp").forward(request, response);
                  }
             
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 1){
-                 System.err.println("Usted no tiene permiso para esta operacion");
-                 response.sendRedirect("/Robo/inicio");         
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);           
                 }
             
             //Se genera una coneccion a la BBDD

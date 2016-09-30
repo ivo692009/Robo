@@ -43,9 +43,9 @@ public class inicioServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
                 if (session == null)
                 {
-                 System.err.println("No ah iniciado sesion");
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");
                  }
             
             //coneccion a la base de datos.

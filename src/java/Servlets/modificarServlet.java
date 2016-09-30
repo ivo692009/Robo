@@ -40,15 +40,16 @@ public class modificarServlet extends HttpServlet {
             HttpSession sesion = request.getSession(false);
                 if (sesion == null)
                 {
-                 System.err.println("No ah iniciado sesion");
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");
                  }
             
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 3){
-                 System.err.println("Usted no tiene permiso para esta operacion");
-                 response.sendRedirect("/Robo/inicio");         
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);           
                 }
                 
             //Recivimos los parametros que vienen por POST desde el formulario de modificar.jsp
@@ -126,15 +127,16 @@ public class modificarServlet extends HttpServlet {
             HttpSession sesion = request.getSession(false);
                 if (sesion == null)
                 {
-                 System.err.println("No ah iniciado sesion");
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");
                  }
             
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 3){
-                 System.err.println("Usted no tiene permiso para esta operacion");
-                 response.sendRedirect("/Robo/inicio");         
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);           
                 }
             
             //Se recibe la id del cliente seleccionado desde el index
@@ -180,7 +182,7 @@ public class modificarServlet extends HttpServlet {
                     nacionalidad.add(row);
                 }
             //Se pone a dispocicion las nacionalidades encontradas.
-            request.setAttribute("nacionalidad", nacionalidad);;
+            request.setAttribute("nacionalidad", nacionalidad);
              
             //Se cierran las conecciones
             pstmt.close();

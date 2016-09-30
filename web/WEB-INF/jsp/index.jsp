@@ -3,6 +3,9 @@
         <div>
             <div>
                 <table >
+                    <c:if test="${error != null}">
+                        <h1>${error}</h1>
+                    </c:if> 
                     <legend>
                     <thead>
                         <h3>Clientes</h3>

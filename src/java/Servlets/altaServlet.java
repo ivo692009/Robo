@@ -40,16 +40,16 @@ public class altaServlet extends HttpServlet {
 
                 if (sesion == null)
                 {
-                 System.err.println("No ah iniciado sesion");
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");
                  }
             
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 1){
-                 System.err.println("Usted no tiene permiso para esta operacion");
-                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");         
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);       
                 }
             
             //Inicio coneccinon a la BBDD
@@ -103,16 +103,16 @@ public class altaServlet extends HttpServlet {
             HttpSession sesion = request.getSession(false);
                 if (sesion == null)
                 {
-                 System.err.println("No ah iniciado sesion");
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");
                  }
             
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 1){
-                 System.err.println("Usted no tiene permiso para esta operacion");
-                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");         
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);           
                 }
             
             //Recivimos los parametros que vienen por POST desde el formulario de alta.jsp
