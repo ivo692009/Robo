@@ -41,6 +41,7 @@ public class modificarServlet extends HttpServlet {
                 if (sesion == null)
                 {
                  System.err.println("No ah iniciado sesion");
+                 request.getRequestDispatcher("index.jsp").forward(request, response);
                  response.sendRedirect("/Robo/inicio");
                  }
             
@@ -126,6 +127,7 @@ public class modificarServlet extends HttpServlet {
                 if (sesion == null)
                 {
                  System.err.println("No ah iniciado sesion");
+                 request.getRequestDispatcher("index.jsp").forward(request, response);
                  response.sendRedirect("/Robo/inicio");
                  }
             
