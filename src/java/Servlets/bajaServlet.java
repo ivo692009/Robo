@@ -28,6 +28,7 @@ public class bajaServlet extends HttpServlet {
     //Pasamos al JSP la informacion.
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            Connection conn = null;
         try {
             response.setContentType("text/html;charset=UTF-8");
             
@@ -36,22 +37,20 @@ public class bajaServlet extends HttpServlet {
                 if (sesion == null)
                 {
                  System.err.println("No ah iniciado sesion");
-                 request.getRequestDispatcher("index.jsp").forward(request, response);
                  response.sendRedirect("/Robo/inicio");
                  }
             
             //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 2){
                  System.err.println("Usted no tiene permiso para esta operacion");
-                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");         
+                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);      
                 }
             
             //Se recibe la id del cliente seleccionado desde el index
             Integer id = Integer.valueOf(request.getParameter("id"));
             
             //coneccion a la base de datos.
-            Connection conn = Utilidades.Conexion.getConnection();
+            conn = Utilidades.Conexion.getConnection();
             
             //Se genera la consulta SQL para buscar a una persona con una ID recibida y se genera el prepare statment
             //y se indica los parametros (solo uno que es el id)
@@ -91,13 +90,23 @@ public class bajaServlet extends HttpServlet {
             Logger.getLogger(modificarServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(modificarServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }    
+        }
+        finally{
+                try {
+                    if(conn != null && !(conn.isClosed())){
+                        conn.close();
+                    }  } catch (SQLException ex) {
+                    Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+         
+         }
     }
     
 
     //si viene una peticion por post con un ID este se elimina
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            Connection conn = null;
             try {
             response.setContentType("text/html;charset=UTF-8");
             
@@ -106,19 +115,17 @@ public class bajaServlet extends HttpServlet {
                 if (sesion == null)
                 {
                  System.err.println("No ah iniciado sesion");
-                 request.getRequestDispatcher("index.jsp").forward(request, response);
                  response.sendRedirect("/Robo/inicio");
                  }
             
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 1){
                  System.err.println("Usted no tiene permiso para esta operacion");
-                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
                  response.sendRedirect("/Robo/inicio");         
                 }
             
             //Se genera una coneccion a la BBDD
-            Connection conn = Utilidades.Conexion.getConnection();
+             conn = Utilidades.Conexion.getConnection();
             
             //Se recibe el ID desde baja.jsp
             Integer id = Integer.valueOf(request.getParameter("id"));
@@ -144,6 +151,15 @@ public class bajaServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(bajaServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+            finally{
+                try {
+                    if(conn != null && !(conn.isClosed())){
+                        conn.close();
+                    }  } catch (SQLException ex) {
+                    Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+         
+         }
     }
 
     

@@ -31,6 +31,7 @@ public class modificarServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            Connection conn = null;
         try { 
               
             response.setContentType("text/html;charset=UTF-8");
@@ -40,14 +41,12 @@ public class modificarServlet extends HttpServlet {
                 if (sesion == null)
                 {
                  System.err.println("No ah iniciado sesion");
-                 request.getRequestDispatcher("index.jsp").forward(request, response);
                  response.sendRedirect("/Robo/inicio");
                  }
             
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 3){
                  System.err.println("Usted no tiene permiso para esta operacion");
-                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
                  response.sendRedirect("/Robo/inicio");         
                 }
                 
@@ -77,7 +76,7 @@ public class modificarServlet extends HttpServlet {
             
             //Se genera una coneccion a la base de datos y se genera el UPDATE con los datos
             //Recividos desde el formulario de modificar.jsp
-            Connection conn = Utilidades.Conexion.getConnection();  
+            conn = Utilidades.Conexion.getConnection();  
             String sql = "UPDATE clientes SET nombre = ?, apellido = ?, fechnac = ?, activo = ?,nacionalidad_id = ? "
                         + "WHERE id = ?";  
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -103,12 +102,22 @@ public class modificarServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(modificarServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        finally{
+                try {
+                    if(conn != null && !(conn.isClosed())){
+                        conn.close();
+                    }  } catch (SQLException ex) {
+                    Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+         
+         }
     }
     
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+            Connection conn = null;
             try {
             response.setContentType("text/html;charset=UTF-8");
             
@@ -117,14 +126,12 @@ public class modificarServlet extends HttpServlet {
                 if (sesion == null)
                 {
                  System.err.println("No ah iniciado sesion");
-                 request.getRequestDispatcher("index.jsp").forward(request, response);
                  response.sendRedirect("/Robo/inicio");
                  }
             
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 3){
                  System.err.println("Usted no tiene permiso para esta operacion");
-                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
                  response.sendRedirect("/Robo/inicio");         
                 }
             
@@ -132,7 +139,7 @@ public class modificarServlet extends HttpServlet {
             Integer id = Integer.valueOf(request.getParameter("id"));
             
             //coneccion a la base de datos.
-            Connection conn = Utilidades.Conexion.getConnection();
+            conn = Utilidades.Conexion.getConnection();
             
             //Se genera la consulta SQL para buscar a una persona con una ID recibida y se genera el prepare statment
             //y se indica los parametros (solo uno que es el id)
@@ -185,6 +192,15 @@ public class modificarServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(modificarServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+            finally{
+                try {
+                    if(conn != null && !(conn.isClosed())){
+                        conn.close();
+                    }  } catch (SQLException ex) {
+                    Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+         
+         }
     
     }
 

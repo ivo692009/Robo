@@ -31,6 +31,7 @@ public class altaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+             Connection conn = null;
          try {
             response.setContentType("text/html;charset=UTF-8");
             
@@ -52,7 +53,7 @@ public class altaServlet extends HttpServlet {
                 }
             
             //Inicio coneccinon a la BBDD
-            Connection conn = Utilidades.Conexion.getConnection();
+            conn = Utilidades.Conexion.getConnection();
             
             //consulta para pedir las nacionalidades, con el prepares statment y almacenado.
             String sql = "SELECT * FROM nacionalidades";
@@ -64,7 +65,7 @@ public class altaServlet extends HttpServlet {
                 while(rs.next()){
                     HashMap row = new HashMap();
                     row.put("id", rs.getInt("id"));
-                    row.put("nacionalidad", rs.getString("nacionalidad"));
+                    row.put("descripcion", rs.getString("descripcion"));
                     nacionalidad.add(row);
                 }
             //Se pone a dispocicion las nacionalidades encontradas.
@@ -78,13 +79,23 @@ public class altaServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(altaServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+         finally{
+                try {
+                    if(conn != null && !(conn.isClosed())){
+                        conn.close();
+                    }  } catch (SQLException ex) {
+                    Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+         
+         }
     }
     
 
     //Si viene por POST a este servlet, se da de alta a un nuevo cliente.
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {      
+            throws ServletException, IOException {
+            Connection conn = null;
         try { 
             response.setContentType("text/html;charset=UTF-8");
             
@@ -129,8 +140,8 @@ public class altaServlet extends HttpServlet {
             
             //Se genera una coneccion a la base de datos y se genera el INSERT con los datos
             //Recividos desde el formulario de alta.jsp
-            Connection conn = Utilidades.Conexion.getConnection();  
-            String sql = "INSERT INTO clientes.clientes (nombre,apellido,fechnac,nacionalidad_id,activo) "
+            conn = Utilidades.Conexion.getConnection();  
+            String sql = "INSERT INTO clientes (nombre,apellido,fechnac,nacionalidad_id,activo) "
                        + "VALUES(?, ?, ?, ?, ?)";  
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, nombre);
@@ -154,6 +165,15 @@ public class altaServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(altaServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        finally{
+                try {
+                    if(conn != null && !(conn.isClosed())){
+                        conn.close();
+                    }  } catch (SQLException ex) {
+                    Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+         
+         }
     }
 
     @Override

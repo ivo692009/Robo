@@ -34,6 +34,7 @@ public class inicioServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            Connection conn = null;
         try {
             
            response.setContentType("text/html;charset=UTF-8");
@@ -48,9 +49,9 @@ public class inicioServlet extends HttpServlet {
                  }
             
             //coneccion a la base de datos.
-            Connection conn = Utilidades.Conexion.getConnection();
+            conn = Utilidades.Conexion.getConnection();
             //crea el SQL y hace un prepares statement
-            String sql = "SELECT * FROM clientes.clientes";
+            String sql = "SELECT * FROM clientes";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             //en una lista enlazada almacena todos los resultados encontrados
@@ -82,6 +83,15 @@ public class inicioServlet extends HttpServlet {
         } catch (NamingException ex) {
             Logger.getLogger(inicioServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        finally{
+                try {
+                    if(conn != null && !(conn.isClosed())){
+                        conn.close();
+                    }  } catch (SQLException ex) {
+                    Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+         
+         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

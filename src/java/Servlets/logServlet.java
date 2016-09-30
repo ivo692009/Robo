@@ -22,25 +22,27 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "logServlet", urlPatterns = {"/log"})
 public class logServlet extends HttpServlet {
-
-    protected void processRequestPOST(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, NamingException {
  
-                try{
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+            Connection conn = null;
+         try{
                 //Iniciamos sesion en una variable sesion. Recivimos los parametros.
                 HttpSession sesion = request.getSession();
-                String usu, pass;
+                String usu, con;
                 usu = request.getParameter("user");
-                pass = request.getParameter("password");
+                con = request.getParameter("password");
                 
                 
                 //Buscamos usuarios
-                Connection conn = Utilidades.Conexion.getConnection();
+                conn = Utilidades.Conexion.getConnection();
                 String sql;
-                sql = "SELECT * FROM ussers WHERE usu = ? AND pass = ? ";
+                sql = "SELECT * FROM ussers WHERE usu = ? AND con = ? ";
                 PreparedStatement pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, usu);
-                pstmt.setString(2, pass);
+                pstmt.setString(2, con);
 
                 //Se almacena los resultados en una variable
                 ResultSet rs = pstmt.executeQuery(); 
@@ -50,12 +52,12 @@ public class logServlet extends HttpServlet {
                 
                 if (rs.next()) {
                 log.setUsu(rs.getString("usu"));
-                log.setPass(rs.getString("pass"));
+                log.setPass(rs.getString("con"));
                 log.setPermiso(rs.getInt("permiso"));
                 
                  }
 
-                    if(log.getUsu().equals(usu) && log.getPass().equals(pass)){
+                    if(log.getUsu().equals(usu) && log.getPass().equals(con)){
                         
                         //iniciamos la variable de sesion con el nombre del log valido.
                         sesion.setAttribute("usuario", log.getUsu());
@@ -64,7 +66,7 @@ public class logServlet extends HttpServlet {
                         //Se pone el objeto log a dispocicion del jsp
                         request.setAttribute("log", log);
                         //redirijo a página con información de login exitoso
-                        response.sendRedirect("../index.jsp");
+                        response.sendRedirect("/Robo/inicio");
                     }else{
                         
                         //Usuario o contraseña no valida
@@ -77,10 +79,22 @@ public class logServlet extends HttpServlet {
                         }
                  } catch (SQLException ex) {
             Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NamingException ex) {
+            Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+         finally{
+                try {
+                    if(conn != null && !(conn.isClosed())){
+                        conn.close();
+                    }  } catch (SQLException ex) {
+                    Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
- 
-
+         
+         }
+    }
+    
+    
+    
     /**
      * Returns a short description of the servlet.
      *

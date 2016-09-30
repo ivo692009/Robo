@@ -36,7 +36,7 @@
                                 <td>
                                     <div>
                                         <a type="button" href="/Robo/modificar?id=${cliente.id}"> Modificar</a>
-                                        <a type="button" href="/Robo/bajar?id=${cliente.id}"> Eliminar </a>
+                                        <a type="button" href="/Robo/baja?id=${cliente.id}"> Eliminar </a>
                                     </div>                                    
                                 </td>
                             </tr>
