@@ -37,20 +37,23 @@ public class altaServlet extends HttpServlet {
             
             //Validamos la sesion
             HttpSession sesion = request.getSession();
-
+                
+                try{
                 if (sesion == null)
                 {
                  String error = "Usted, no ah iniciado una sesion";
                  request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
                  }
-            
+                }catch(IOException e){}
                 //Validamos persmiso
+                try{
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 1){
                  String error = "Usted No tiene permiso para esta operacion";
                  request.setAttribute("error", error);
                  request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);       
                 }
+                }catch(IOException e){}
             
             //Inicio coneccinon a la BBDD
             conn = Utilidades.Conexion.getConnection();
@@ -101,20 +104,24 @@ public class altaServlet extends HttpServlet {
             
             //Validamos la sesion
             HttpSession sesion = request.getSession();
+            
+            try{
                 if (sesion == null)
                 {
                  String error = "Usted, no ah iniciado una sesion";
                  request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
                  }
+            }catch(IOException e){}
             
+            try{
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 1){
                  String error = "Usted No tiene permiso para esta operacion";
                  request.setAttribute("error", error);
                  request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);           
                 }
-            
+            }catch(IOException e){}
             //Recivimos los parametros que vienen por POST desde el formulario de alta.jsp
             String nombre = request.getParameter("nombre");
             String apellido = request.getParameter("apellido");

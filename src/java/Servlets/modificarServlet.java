@@ -38,19 +38,24 @@ public class modificarServlet extends HttpServlet {
             
             //Validamos la sesion
             HttpSession sesion = request.getSession();
+            
+            try{
                 if (sesion == null)
                 {
                  String error = "Usted, no ah iniciado una sesion";
                  request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
                  }
+            }catch(IOException e){}
             
+                try{
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 3){
                  String error = "Usted No tiene permiso para esta operacion";
                  request.setAttribute("error", error);
                  request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);           
                 }
+                }catch(IOException e){}
                 
             //Recivimos los parametros que vienen por POST desde el formulario de modificar.jsp
             String nombre = request.getParameter("nombre");
@@ -125,19 +130,24 @@ public class modificarServlet extends HttpServlet {
             
             //Validamos la sesion
             HttpSession sesion = request.getSession();
+            
+                try{
                 if (sesion == null)
                 {
                  String error = "Usted, no ah iniciado una sesion";
                  request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
                  }
+                }catch(IOException e){}
             
                 //Validamos persmiso
+                try{
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 3){
                  String error = "Usted No tiene permiso para esta operacion";
                  request.setAttribute("error", error);
                  request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);           
                 }
+                }catch(IOException e){}
             
             //Se recibe la id del cliente seleccionado desde el index
             Integer id = Integer.valueOf(request.getParameter("id"));

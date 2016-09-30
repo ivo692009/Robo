@@ -34,19 +34,29 @@ public class bajaServlet extends HttpServlet {
             
             //Validamos la sesion
             HttpSession sesion = request.getSession();
+            
+            try{
                 if (sesion == null)
                 {
                  String error = "Usted, no ah iniciado una sesion";
                  request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
                  }
+            }catch(IOException e){
+                
+            }
             
             //Validamos persmiso
+            
+            try{
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 2){
                  String error = "Usted No tiene permiso para esta Operacion";
                  request.setAttribute("error", error);
                  request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);        
                 }
+            }catch(IOException e){
+            
+            }
             
             //Se recibe la id del cliente seleccionado desde el index
             Integer id = Integer.valueOf(request.getParameter("id"));
@@ -114,20 +124,25 @@ public class bajaServlet extends HttpServlet {
             
             //Validamos la sesion
             HttpSession sesion = request.getSession();
+            
+            try{
                 if (sesion == null)
                 {
                  String error = "Usted, no ah iniciado una sesion";
                  request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
                  }
-            
+            }catch(IOException e){
+            } 
+               
+            try{
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 1){
                  String error = "Usted No tiene permiso para esta operacion";
                  request.setAttribute("error", error);
                  request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);           
                 }
-            
+            }catch(IOException e){}
             //Se genera una coneccion a la BBDD
              conn = Utilidades.Conexion.getConnection();
             
