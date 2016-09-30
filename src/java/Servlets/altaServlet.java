@@ -36,7 +36,7 @@ public class altaServlet extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             
             //Validamos la sesion
-            HttpSession sesion = request.getSession(false);
+            HttpSession sesion = request.getSession();
 
                 if (sesion == null)
                 {
@@ -47,9 +47,9 @@ public class altaServlet extends HttpServlet {
             
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 1){
-                 String error = "Usted, no ah iniciado una sesion";
+                 String error = "Usted No tiene permiso para esta operacion";
                  request.setAttribute("error", error);
-                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);       
+                 request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);       
                 }
             
             //Inicio coneccinon a la BBDD
@@ -100,7 +100,7 @@ public class altaServlet extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             
             //Validamos la sesion
-            HttpSession sesion = request.getSession(false);
+            HttpSession sesion = request.getSession();
                 if (sesion == null)
                 {
                  String error = "Usted, no ah iniciado una sesion";
@@ -110,9 +110,9 @@ public class altaServlet extends HttpServlet {
             
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 1){
-                 String error = "Usted, no ah iniciado una sesion";
+                 String error = "Usted No tiene permiso para esta operacion";
                  request.setAttribute("error", error);
-                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);           
+                 request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);           
                 }
             
             //Recivimos los parametros que vienen por POST desde el formulario de alta.jsp
