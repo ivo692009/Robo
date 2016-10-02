@@ -94,12 +94,18 @@ public class logServlet extends HttpServlet {
     }
     
     
-    
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+       protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+           
+           HttpSession sesion = request.getSession();
+           sesion.invalidate();
+           String error = "Usted ah cerrado la sesion";
+           request.setAttribute("error", error);
+           request.getRequestDispatcher("index.jsp").forward(request, response);
+
+       
+         }
+  
     @Override
     public String getServletInfo() {
         return "Short description";

@@ -49,6 +49,7 @@
                 </table>
                 <hr>
                 <a type="button" href="/Robo/alta">Nuevo cliente</a>
+                <a type="button" href="/Robo/log">Cerrar Sesion</a>
             </div>
         </div>
     </body>
