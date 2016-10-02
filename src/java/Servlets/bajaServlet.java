@@ -74,6 +74,7 @@ public class bajaServlet extends HttpServlet {
             //Se almacena los resultados en una variable
             ResultSet rs = pstmt.executeQuery();        
             
+            try{
             //Si se encontro al cliente solicitado se almacena en un nuevo objeto tipo Cliente.
             if (rs.next()) {
                 Cliente cliente = new Cliente();
@@ -89,7 +90,12 @@ public class bajaServlet extends HttpServlet {
                 
                 //Se pone el objeto cliente a dispocicion del jsp
                 request.setAttribute("cliente", cliente);
-            }
+            }else{
+                 String error = "ID seleccionada invalida o no encontrada";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);  
+            
+            }}catch(IOException e){}
                    
             //Se cierran las conecciones
             pstmt.close();
