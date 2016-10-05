@@ -1,5 +1,6 @@
 package Servlets;
 
+import Utilidades.Conexion;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -62,7 +63,8 @@ public class inicioServlet extends HttpServlet {
                     row.put("id", rs.getInt("id"));
                     row.put("nombre", rs.getString("nombre"));
                     row.put("apellido", rs.getString("apellido"));
-                    row.put("fechnac", rs.getDate("fechnac"));
+                    //Calculamos la edad de la persona
+                    row.put("fechnac", Conexion.calcularEdad(rs.getDate("fechnac")));
                     row.put("activo", rs.getInt("activo"));
                     resultado.add(row);
                 }
