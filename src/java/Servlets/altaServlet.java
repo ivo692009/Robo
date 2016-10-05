@@ -31,28 +31,32 @@ public class altaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+             Connection conn = null;
          try {
             response.setContentType("text/html;charset=UTF-8");
             
             //Validamos la sesion
-            HttpSession sesion = request.getSession(false);
-
+            HttpSession sesion = request.getSession();
+                
+                try{
                 if (sesion == null)
                 {
-                 System.err.println("No ah iniciado sesion");
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");
                  }
-            
+                }catch(IOException e){}
                 //Validamos persmiso
+                try{
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 1){
-                 System.err.println("Usted no tiene permiso para esta operacion");
-                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");         
+                 String error = "Usted No tiene permiso para esta operacion";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);       
                 }
+                }catch(IOException e){}
             
             //Inicio coneccinon a la BBDD
-            Connection conn = Utilidades.Conexion.getConnection();
+            conn = Utilidades.Conexion.getConnection();
             
             //consulta para pedir las nacionalidades, con el prepares statment y almacenado.
             String sql = "SELECT * FROM nacionalidades";
@@ -64,7 +68,7 @@ public class altaServlet extends HttpServlet {
                 while(rs.next()){
                     HashMap row = new HashMap();
                     row.put("id", rs.getInt("id"));
-                    row.put("nacionalidad", rs.getString("nacionalidad"));
+                    row.put("descripcion", rs.getString("descripcion"));
                     nacionalidad.add(row);
                 }
             //Se pone a dispocicion las nacionalidades encontradas.
@@ -78,32 +82,46 @@ public class altaServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(altaServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+         finally{
+                try {
+                    if(conn != null && !(conn.isClosed())){
+                        conn.close();
+                    }  } catch (SQLException ex) {
+                    Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+         
+         }
     }
     
 
     //Si viene por POST a este servlet, se da de alta a un nuevo cliente.
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {      
+            throws ServletException, IOException {
+            Connection conn = null;
         try { 
             response.setContentType("text/html;charset=UTF-8");
             
             //Validamos la sesion
-            HttpSession sesion = request.getSession(false);
+            HttpSession sesion = request.getSession();
+            
+            try{
                 if (sesion == null)
                 {
-                 System.err.println("No ah iniciado sesion");
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");
                  }
+            }catch(IOException e){}
             
+            try{
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 1){
-                 System.err.println("Usted no tiene permiso para esta operacion");
-                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");         
+                 String error = "Usted No tiene permiso para esta operacion";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);           
                 }
-            
+            }catch(IOException e){}
             //Recivimos los parametros que vienen por POST desde el formulario de alta.jsp
             String nombre = request.getParameter("nombre");
             String apellido = request.getParameter("apellido");
@@ -129,8 +147,8 @@ public class altaServlet extends HttpServlet {
             
             //Se genera una coneccion a la base de datos y se genera el INSERT con los datos
             //Recividos desde el formulario de alta.jsp
-            Connection conn = Utilidades.Conexion.getConnection();  
-            String sql = "INSERT INTO clientes.clientes (nombre,apellido,fechnac,nacionalidad_id,activo) "
+            conn = Utilidades.Conexion.getConnection();  
+            String sql = "INSERT INTO clientes (nombre,apellido,fechnac,nacionalidad_id,activo) "
                        + "VALUES(?, ?, ?, ?, ?)";  
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, nombre);
@@ -154,6 +172,15 @@ public class altaServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(altaServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        finally{
+                try {
+                    if(conn != null && !(conn.isClosed())){
+                        conn.close();
+                    }  } catch (SQLException ex) {
+                    Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+         
+         }
     }
 
     @Override

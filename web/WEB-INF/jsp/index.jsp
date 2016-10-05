@@ -3,6 +3,9 @@
         <div>
             <div>
                 <table >
+                    <c:if test="${error != null}">
+                        <h1>${error}</h1>
+                    </c:if> 
                     <legend>
                     <thead>
                         <h3>Clientes</h3>
@@ -36,7 +39,7 @@
                                 <td>
                                     <div>
                                         <a type="button" href="/Robo/modificar?id=${cliente.id}"> Modificar</a>
-                                        <a type="button" href="/Robo/bajar?id=${cliente.id}"> Eliminar </a>
+                                        <a type="button" href="/Robo/baja?id=${cliente.id}"> Eliminar </a>
                                     </div>                                    
                                 </td>
                             </tr>
@@ -46,6 +49,7 @@
                 </table>
                 <hr>
                 <a type="button" href="/Robo/alta">Nuevo cliente</a>
+                <a type="button" href="/Robo/log">Cerrar Sesion</a>
             </div>
         </div>
     </body>

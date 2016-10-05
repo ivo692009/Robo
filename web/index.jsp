@@ -17,5 +17,6 @@
         <input type="password" name="password" value="contraseña">
         <input type="submit" value="Enviar">
         <form>
+        <a type="button" href="/Robo/sing">Crear Cuenta</a>
     </body>
 </html>

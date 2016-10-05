@@ -5,6 +5,9 @@
         <title>Baja</title>
     </head>
     <body>
+        <c:if test="${error != null}">
+                <h1>${error}</h1>
+        </c:if> 
         <form method="POST" action="/Robo/baja">
             <input type="hidden" name="id" id="id" value="${cliente_id}">
             <h3>¿Seguro que desea eliminar este usuario?</h3>

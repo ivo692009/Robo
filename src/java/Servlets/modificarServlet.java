@@ -31,25 +31,31 @@ public class modificarServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            Connection conn = null;
         try { 
               
             response.setContentType("text/html;charset=UTF-8");
             
             //Validamos la sesion
-            HttpSession sesion = request.getSession(false);
+            HttpSession sesion = request.getSession();
+            
+            try{
                 if (sesion == null)
                 {
-                 System.err.println("No ah iniciado sesion");
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");
                  }
+            }catch(IOException e){}
             
+                try{
                 //Validamos persmiso
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 3){
-                 System.err.println("Usted no tiene permiso para esta operacion");
-                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");         
+                 String error = "Usted No tiene permiso para esta operacion";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);           
                 }
+                }catch(IOException e){}
                 
             //Recivimos los parametros que vienen por POST desde el formulario de modificar.jsp
             String nombre = request.getParameter("nombre");
@@ -77,7 +83,7 @@ public class modificarServlet extends HttpServlet {
             
             //Se genera una coneccion a la base de datos y se genera el UPDATE con los datos
             //Recividos desde el formulario de modificar.jsp
-            Connection conn = Utilidades.Conexion.getConnection();  
+            conn = Utilidades.Conexion.getConnection();  
             String sql = "UPDATE clientes SET nombre = ?, apellido = ?, fechnac = ?, activo = ?,nacionalidad_id = ? "
                         + "WHERE id = ?";  
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -103,36 +109,51 @@ public class modificarServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(modificarServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        finally{
+                try {
+                    if(conn != null && !(conn.isClosed())){
+                        conn.close();
+                    }  } catch (SQLException ex) {
+                    Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+         
+         }
     }
     
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+            Connection conn = null;
             try {
             response.setContentType("text/html;charset=UTF-8");
             
             //Validamos la sesion
-            HttpSession sesion = request.getSession(false);
+            HttpSession sesion = request.getSession();
+            
+                try{
                 if (sesion == null)
                 {
-                 System.err.println("No ah iniciado sesion");
+                 String error = "Usted, no ah iniciado una sesion";
+                 request.setAttribute("error", error);
                  request.getRequestDispatcher("index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");
                  }
+                }catch(IOException e){}
             
                 //Validamos persmiso
+                try{
                 if(Integer.valueOf(sesion.getAttribute("permiso").toString()) != 3){
-                 System.err.println("Usted no tiene permiso para esta operacion");
-                 request.getRequestDispatcher("WEB-INF/jsp/index.jsp").forward(request, response);
-                 response.sendRedirect("/Robo/inicio");         
+                 String error = "Usted No tiene permiso para esta operacion";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);           
                 }
+                }catch(IOException e){}
             
             //Se recibe la id del cliente seleccionado desde el index
             Integer id = Integer.valueOf(request.getParameter("id"));
             
             //coneccion a la base de datos.
-            Connection conn = Utilidades.Conexion.getConnection();
+            conn = Utilidades.Conexion.getConnection();
             
             //Se genera la consulta SQL para buscar a una persona con una ID recibida y se genera el prepare statment
             //y se indica los parametros (solo uno que es el id)
@@ -144,6 +165,7 @@ public class modificarServlet extends HttpServlet {
             //Se almacena los resultados en una variable
             ResultSet rs = pstmt.executeQuery();        
             
+            try{
             //Si se encontro al cliente solicitado se almacena en un nuevo objeto tipo Cliente.
             if (rs.next()) {
                 Cliente cliente = new Cliente();
@@ -160,6 +182,12 @@ public class modificarServlet extends HttpServlet {
                 //Se pone el objeto cliente a dispocicion del jsp
                 request.setAttribute("cliente", cliente);
             }
+            else{
+                 String error = "ID seleccionada invalida o no encontrada";
+                 request.setAttribute("error", error);
+                 request.getRequestDispatcher("WEB-INF/jsp/error.jsp").forward(request, response);  
+            
+            }}catch(IOException e){}
             
             
             //Una linkedList para las nacionalidades enconcontradas
@@ -171,7 +199,7 @@ public class modificarServlet extends HttpServlet {
                     nacionalidad.add(row);
                 }
             //Se pone a dispocicion las nacionalidades encontradas.
-            request.setAttribute("nacionalidad", nacionalidad);;
+            request.setAttribute("nacionalidad", nacionalidad);
              
             //Se cierran las conecciones
             pstmt.close();
@@ -185,6 +213,15 @@ public class modificarServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(modificarServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+            finally{
+                try {
+                    if(conn != null && !(conn.isClosed())){
+                        conn.close();
+                    }  } catch (SQLException ex) {
+                    Logger.getLogger(logServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+         
+         }
     
     }
 

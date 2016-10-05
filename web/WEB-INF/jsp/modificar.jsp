@@ -3,6 +3,9 @@
     <body>
         <div>
             <legend>Nuevo cliente</legend>
+            <c:if test="${error != null}">
+                <h1>${error}</h1>
+            </c:if> 
             <form method="POST" action="/Robo/modificar">
             <input type="hidden" name="id" id="id" value="${cliente_id}">
                 <div>
